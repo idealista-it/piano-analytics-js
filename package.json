@@ -60,5 +60,8 @@
     "rollup-plugin-eslint": "7.0.0",
     "rollup-plugin-replace": "2.2.0",
     "rollup-plugin-uglify": "6.0.4"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^2.2.0"
   }
 }
