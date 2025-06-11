@@ -1,6 +1,9 @@
 import {Platform} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorageModule from '@react-native-async-storage/async-storage';
 import Config from '../../config.js';
+
+// Handle the case where methods might be under .default
+const AsyncStorage = AsyncStorageModule.default || AsyncStorageModule;
 
 const PENDING_EVENTS_KEY = 'piano_analytics_pending_events';
 const MAX_PENDING_EVENTS = 100; // Maximum number of pending events to store
