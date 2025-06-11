@@ -23,7 +23,10 @@ export default {
         babel({babelHelpers: 'bundled'}),
         process.env.NODE_ENV === 'production' && uglify()
     ],
-    external: ['react-native'],
+    external: [
+        'react-native',
+        '@react-native-async-storage/async-storage',
+    ],
     output: [
         {
             file: 'dist/browserless/piano-analytics.react-native.umd.js',
@@ -31,6 +34,7 @@ export default {
             name: 'pianoAnalytics',
             globals: {
                 'react-native': 'reactNative',
+                '@react-native-async-storage/async-storage': 'AsyncStorageModule',
             }
         }
     ]

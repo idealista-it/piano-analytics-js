@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/at-internet/piano-analytics-js"
+    "url": "https://github.com/idealista-it/piano-analytics-js"
   },
   "keywords": [
     "piano",
@@ -21,7 +21,6 @@
     "analytics"
   ],
   "scripts": {
-    "prepare": "npm run build",
     "prebuild:browser": "grunt --gruntfile Gruntfile.cjs copy:http-browser",
     "prebuild:browser-es5": "grunt --gruntfile Gruntfile.cjs copy:http-browser-es5",
     "prebuild:node": "grunt --gruntfile Gruntfile.cjs copy:http-node",
