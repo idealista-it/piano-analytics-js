@@ -39,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "7.27.1",
     "@babel/preset-env": "7.27.2",
+    "@react-native-async-storage/async-storage": "^2.2.0",
     "@rollup/plugin-babel": "6.0.4",
     "chai": "4.3.8",
     "eslint": "9.27.0",
@@ -61,7 +62,8 @@
     "rollup-plugin-replace": "2.2.0",
     "rollup-plugin-uglify": "6.0.4"
   },
-  "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0"
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": ">=2.0.0",
+    "react-native": ">=0.60.0"
   }
 }
