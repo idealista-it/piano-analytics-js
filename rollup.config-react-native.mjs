@@ -18,15 +18,13 @@ export default {
         replace({
             BUILD_BROWSER: 'false',
             '@piano-sdk/storage': '../storage/storage.js',
-            delimiters: ['', ''],
-            preventAssignment: true
+            delimiters: ['', '']
         }),
         babel({babelHelpers: 'bundled'}),
         process.env.NODE_ENV === 'production' && uglify()
     ],
     external: [
         'react-native',
-        '@react-native-async-storage/async-storage'
     ],
     output: [
         {
@@ -34,10 +32,8 @@ export default {
             format: 'umd',
             name: 'pianoAnalytics',
             globals: {
-                'react-native': 'require("react-native")',
-                '@react-native-async-storage/async-storage': 'require("@react-native-async-storage/async-storage").default'
-            },
-            exports: 'named'
+                'react-native': 'reactNative',
+            }
         }
     ]
 };
