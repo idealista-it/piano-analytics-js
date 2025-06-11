@@ -25,6 +25,7 @@ export default {
     ],
     external: [
         'react-native',
+        '@react-native-async-storage/async-storage',
     ],
     output: [
         {
@@ -33,6 +34,7 @@ export default {
             name: 'pianoAnalytics',
             globals: {
                 'react-native': 'reactNative',
+                '@react-native-async-storage/async-storage': 'AsyncStorageModule',
             }
         }
     ]
