@@ -2,6 +2,8 @@ import {Platform} from 'react-native';
 import AsyncStorageModule from '@react-native-async-storage/async-storage';
 import Config from '../../config.js';
 
+const __FULL_ANALYTICS_LOGGING__ = global.__FULL_ANALYTICS_LOGGING__;
+
 // Handle the case where methods might be under .default
 const AsyncStorage = AsyncStorageModule.default || AsyncStorageModule;
 
@@ -49,7 +51,7 @@ const addPendingEvents = (eventsArray) => {
     const combinedEvents = [...pendingEventsCache, ...eventsArray];
     pendingEventsCache = combinedEvents.slice(Math.max(0, combinedEvents.length - MAX_PENDING_EVENTS));
 
-    __DEV__ && console.log(`Added ${eventsArray.length} events to pending events cache, total now: ${pendingEventsCache.length}`);
+    __FULL_ANALYTICS_LOGGING__ && console.log(`Added ${eventsArray.length} events to pending events cache, total now: ${pendingEventsCache.length}`);
 };
 
 const persistPendingEvents = async () => {
@@ -64,7 +66,7 @@ const persistPendingEvents = async () => {
 const loadPendingEvents = () => {
     getPendingEvents().then(events => {
         if (events.length > 0) {
-            __DEV__ && console.log(`Loaded ${events.length} pending events from storage`);
+            __FULL_ANALYTICS_LOGGING__ && console.log(`Loaded ${events.length} pending events from storage`);
         }
     }).catch(error => {
         console.error('Error loading pending events at startup:', error);
@@ -99,7 +101,7 @@ const http = {
             // Check if the caller asked to postpone tracking, via the send_later flag
             // if (data?.events?.[0]?.data?.send_later) {
             //     delete data.events[0].data.send_later; // Remove the send_later flag from the event
-            //     __DEV__ && console.log('Event has send_later flag, storing as pending event');
+            //     __FULL_ANALYTICS_LOGGING__ && console.log('Event has send_later flag, storing as pending event');
             //     storeEvents(data.events);
             //     return Promise.resolve();
             // }
@@ -107,20 +109,20 @@ const http = {
             // Try to merge any previously pending events
             // do not worry if pending events are not loaded yet, they will be processed in the next request
             if (pendingEventsCache?.length > 0) {
-                __DEV__ && console.log(`Found ${pendingEventsCache.length} pending events to merge`);
-                __DEV__ && console.log('Pending events:', pendingEventsCache);
+                __FULL_ANALYTICS_LOGGING__ && console.log(`Found ${pendingEventsCache.length} pending events to merge`);
+                __FULL_ANALYTICS_LOGGING__ && console.log('Pending events:', pendingEventsCache);
                 
                 // Combine the pending events with the current events and replace the data object, to avoid modifying the original data
                 dataToSend = {events: [...pendingEventsCache, ...data.events]};
-                __DEV__ && console.log(`Merged ${pendingEventsCache.length} previous events with current request`);
+                __FULL_ANALYTICS_LOGGING__ && console.log(`Merged ${pendingEventsCache.length} previous events with current request`);
                 
                 // Clear pending events - we'll re-add any that fail again
                 // this is critical, as otherwise other concurrent requests may read the same pending events and duplicate them when failing
                 pendingEventsCache = [];
                 await persistPendingEvents();
             }
-            __DEV__ && console.log('Data to send:', dataToSend);
-            __DEV__ && console.log('Sending to URL:', url);
+            __FULL_ANALYTICS_LOGGING__ && console.log('Data to send:', dataToSend);
+            __FULL_ANALYTICS_LOGGING__ && console.log('Sending to URL:', url);
              // serialize here, if it fails it is safer to lose all the events because we do not know where the problem is
             postBody = JSON.stringify(dataToSend);
         } catch (error) {
@@ -149,11 +151,11 @@ const http = {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                __DEV__ && console.log('Success tracking event');
+                __FULL_ANALYTICS_LOGGING__ && console.log('Success tracking event');
                 callback && callback(url, response);
             })
             .catch(async (error) => {
-                __DEV__ && console.log('Request failed, storing events as pending:', error);
+                __FULL_ANALYTICS_LOGGING__ && console.log('Request failed, storing events as pending:', error);
                 storeEvents(dataToSend.events);
             });
     }
